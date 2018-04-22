@@ -31,7 +31,7 @@ public class SignInServlet extends HttpServlet {
         if(profile != null && profile.getPassword().equals(password)){
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println("Authorized:" + login);
+            response.getWriter().println("Authorized: " + login);
         } else {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

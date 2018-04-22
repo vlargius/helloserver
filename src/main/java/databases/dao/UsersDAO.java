@@ -1,23 +1,23 @@
 package databases.dao;
 
 import java.sql.Connection;
-import databases.datasets.UserDataset;
+import databases.datasets.UsersDataSet;
 import databases.executor.Executor;
 
 import java.sql.SQLException;
 
-public class UserDAO {
+public class UsersDAO {
 
     private Executor executor;
 
-    public UserDAO(Connection connection) {
+    public UsersDAO(Connection connection) {
         this.executor = new Executor(connection);
     }
 
-    public UserDataset get(long id) throws SQLException {
+    public UsersDataSet get(long id) throws SQLException {
         return executor.execQuery("select * from users where id=" + id, result -> {
             result.next();
-            return new UserDataset(result.getLong(1), result.getString(2));
+            return new UsersDataSet(result.getLong(1), result.getString(2));
         });
     }
 
