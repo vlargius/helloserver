@@ -1,4 +1,4 @@
-package databases.executor;
+package jdbc_database.executor;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

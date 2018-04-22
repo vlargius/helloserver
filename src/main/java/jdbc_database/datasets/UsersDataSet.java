@@ -1,4 +1,4 @@
-package databases.datasets;
+package jdbc_database.datasets;
 
 @SuppressWarnings("UnusedDeclaration")
 public class UsersDataSet {

@@ -1,7 +1,8 @@
-package databases;
+package jdbc_database;
 
-import databases.dao.UsersDAO;
-import databases.datasets.UsersDataSet;
+import accounts.UserProfile;
+import jdbc_database.dao.UsersDAO;
+import jdbc_database.datasets.UsersDataSet;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -15,22 +16,23 @@ public class DBService {
         this.connection = getMysqlConnection();
     }
 
-    public UsersDataSet getUser(long id) throws DBException {
+    public UserProfile getUser(String name) throws DBException {
         try {
-            return (new UsersDAO(connection).get(id));
+            return (new UsersDAO(connection).getUserByName(name));
         } catch (SQLException e) {
-            throw new DBException(e);
+            e.printStackTrace();
         }
+        return null;
     }
 
-    public long addUser(String name) {
+    public void addUser(UserProfile userProfile) {
         try {
             connection.setAutoCommit(false);
             UsersDAO dao = new UsersDAO(connection);
             dao.createTable();
-            dao.insertUser(name);
+            if(dao.getUserByName(userProfile.getLogin()) == null)
+                dao.insertUser(userProfile);
             connection.commit();
-            return dao.getUserId(name);
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -38,13 +40,12 @@ public class DBService {
 
             }
         }
-        return -1;
     }
 
-    public void cleanUp() throws SQLException {
-        UsersDAO dao = new UsersDAO(connection);
-        dao.dropTable();
-    }
+//    public void cleanUp() throws SQLException {
+//        UsersDAO dao = new UsersDAO(connection);
+//        dao.dropTable();
+//    }
 
     public void printConnectionInfo() {
         try {
@@ -58,7 +59,6 @@ public class DBService {
         }
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public static Connection getMysqlConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
